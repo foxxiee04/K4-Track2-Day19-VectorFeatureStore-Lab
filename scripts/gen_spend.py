@@ -28,8 +28,16 @@ def main() -> int:
                 "created": now - pd.Timedelta(f"{days_ago}D"),
             })
     df = pd.DataFrame(rows)
+    import pyarrow as pa
+    schema = pa.schema([
+        ("user_id", pa.string()),
+        ("event_timestamp", pa.timestamp("us", tz="UTC")),
+        ("avg_amount_7d", pa.float64()),
+        ("txn_count_7d", pa.int64()),
+        ("created", pa.timestamp("us", tz="UTC")),
+    ])
     path = OUT / "user_spend.parquet"
-    df.to_parquet(path, index=False)
+    df.to_parquet(path, index=False, schema=schema)
     print(f"wrote {path} ({len(df)} rows, {df.user_id.nunique()} users)")
     return 0
 

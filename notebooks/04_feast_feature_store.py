@@ -46,7 +46,7 @@ def make_user_profile(n_users: int = 100) -> pl.DataFrame:
             ["ai_ml", "cloud", "security", "database", "devops"][i % 5]
             for i in range(n_users)
         ],
-        "event_timestamp": [NOW - timedelta(hours=i % 48) for i in range(n_users)],
+        "event_timestamp": [NOW - timedelta(hours=(i % 48) + 3) for i in range(n_users)],
     })
 
 
